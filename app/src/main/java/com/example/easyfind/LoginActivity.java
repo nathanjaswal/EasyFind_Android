@@ -60,10 +60,10 @@ public class LoginActivity extends AppCompatActivity {
     private void loginButtonClicked() {
         String user = userNameTextView.getText().toString();
         String pass = passwordTextView.getText().toString();
-        if (!user.equals("user@employee.com") && user.trim().contains("")) {
-            showAlert("User name should be 'user@employee.com'");
-        } else if (!pass.equals("s3cr3t") && pass.trim().contains("")) {
-            showAlert("Password should be 's3cr3t' ");
+        if (!user.equals("easy@gmail.com") && user.trim().contains("")) {
+            showAlert("User name should be 'easy@gmail.com'");
+        } else if (!pass.equals("123") && pass.trim().contains("")) {
+            showAlert("Password should be '123' ");
         } else {
             UserDataManager.setLoggedIn(getApplicationContext(),true);
             if(rememberMeSwitch.isChecked()) {
@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                 UserDataManager.setPassword(getApplicationContext(), "null");
             }
 
-            // navigate
+            // navigate...
 //            Intent intent = new Intent(context(), NavDrawerActivity.class);
 //            startActivity(intent);
         }
