@@ -1,12 +1,9 @@
-app/src/main/java/com/example/easyfind/activities/MainActivity.java
+
 package com.example.easyfind.activities;
-package com.example.easyfind;
 
 import android.os.Bundle;
-
 import com.example.easyfind.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;

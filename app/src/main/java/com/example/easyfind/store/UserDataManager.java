@@ -1,4 +1,4 @@
-package com.example.easyfind;
+package com.example.easyfind.store;
 
 import android.content.Context;
 import android.content.SharedPreferences;

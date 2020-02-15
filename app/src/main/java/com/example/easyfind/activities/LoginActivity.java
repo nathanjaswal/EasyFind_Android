@@ -1,4 +1,4 @@
-package com.example.easyfind;
+package com.example.easyfind.activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+
+import com.example.easyfind.R;
+import com.example.easyfind.store.UserDataManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -58,6 +61,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginButtonClicked() {
+        Intent intent = new Intent(context(), MainActivity.class);
+        startActivity(intent);
+        /*
         String user = userNameTextView.getText().toString();
         String pass = passwordTextView.getText().toString();
         if (!user.equals("easy@gmail.com") && user.trim().contains("")) {
@@ -75,9 +81,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             // navigate...
-//            Intent intent = new Intent(context(), NavDrawerActivity.class);
-//            startActivity(intent);
-        }
+        }*/
     }
 
     private void showAlert(String message) {
