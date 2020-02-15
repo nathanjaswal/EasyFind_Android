@@ -1,4 +1,6 @@
+app/src/main/java/com/example/easyfind/activities/MainActivity.java
 package com.example.easyfind.activities;
+package com.example.easyfind;
 
 import android.os.Bundle;
 
