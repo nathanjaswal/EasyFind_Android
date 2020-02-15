@@ -1,7 +1,8 @@
-package com.example.easyfind;
+package com.example.easyfind.activities;
 
 import android.os.Bundle;
 
+import com.example.easyfind.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
