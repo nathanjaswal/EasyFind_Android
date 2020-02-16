@@ -19,6 +19,9 @@ public class Business {
     @SerializedName("id")
     @Expose private String id;
 
+    @ColumnInfo(name = "isFav")
+    private boolean isFav;
+
     @ColumnInfo(name = "alias")
     @SerializedName("alias")
     @Expose private String alias;
@@ -196,5 +199,13 @@ public class Business {
 
     public void setDistance(Double distance) {
         this.distance = distance;
+    }
+
+    public boolean isFav() {
+        return isFav;
+    }
+
+    public void setFav(boolean fav) {
+        isFav = fav;
     }
 }

@@ -56,6 +56,7 @@ public class FavouriteFragment extends Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
+                businesses.removeAll(businesses);
                 businesses.addAll(businessService.getAll());
                 return null;
             }

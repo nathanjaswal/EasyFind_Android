@@ -14,9 +14,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.ColumnInfo;
+
 import com.example.easyfind.R;
 import com.example.easyfind.database.BusinessServiceImpl;
 import com.example.easyfind.models.Business;
+import com.example.easyfind.ui.fav.FavouriteFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -46,17 +49,35 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         holder.txtCategory.setText(business.getCategories().get(0).getTitle());
         holder.txtPrice.setText(business.getPrice());
         holder.ratingBar.setRating(business.getRating().floatValue());
+        final boolean isFav = business.isFav();
+        setFav(isFav, holder);
         holder.imgFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToFav(business, v.getContext());
+                addToFavUnFav(business, v.getContext(), isFav);
             }
         });
     }
 
-    private void addToFav(Business business, Context context) {
+    private void setFav(boolean isFav, RestaurantViewHolder holder) {
+        holder.imgFavourite.setImageResource(isFav ? R.drawable.ic_fav_black_24dp : R.drawable.ic_unfav_black_24dp);
+    }
+
+    private void addToFavUnFav(Business business, Context context, boolean isFav) {
         BusinessServiceImpl businessService = new BusinessServiceImpl(context);
-        businessService.insertAll(business);
+        business.setFav(!isFav);
+        if (isFav) {
+            businessService.delete(business);
+            refreshList(businessService);
+        } else {
+            businessService.insertAll(business);
+        }
+    }
+
+    private void refreshList(BusinessServiceImpl businessService) {
+        businesses.removeAll(businesses);
+        businesses.addAll(businessService.getAll());
+        notifyDataSetChanged();
     }
 
     private void replaceFragment (Fragment fragment, View v){
