@@ -1,5 +1,6 @@
 package com.example.easyfind.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.easyfind.R;
+import com.example.easyfind.database.BusinessServiceImpl;
 import com.example.easyfind.models.Business;
 import com.squareup.picasso.Picasso;
 
@@ -36,7 +38,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     @Override
     public void onBindViewHolder(@NonNull final RestaurantViewHolder holder, int position) {
-        Business business = businesses.get(position);
+        final Business business = businesses.get(position);
         holder.txtName.setText(business.getName());
         holder.txtAddress.setText(business.getLocation().getAddress1());
         Picasso.get().load(business.getImageUrl()).into(holder.imgRestaurant);
@@ -44,6 +46,17 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         holder.txtCategory.setText(business.getCategories().get(0).getTitle());
         holder.txtPrice.setText(business.getPrice());
         holder.ratingBar.setRating(business.getRating().floatValue());
+        holder.imgFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addToFav(business, v.getContext());
+            }
+        });
+    }
+
+    private void addToFav(Business business, Context context) {
+        BusinessServiceImpl businessService = new BusinessServiceImpl(context);
+        businessService.insertAll(business);
     }
 
     private void replaceFragment (Fragment fragment, View v){

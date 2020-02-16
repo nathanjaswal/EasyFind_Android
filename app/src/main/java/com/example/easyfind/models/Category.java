@@ -6,11 +6,10 @@ import com.google.gson.annotations.SerializedName;
 public class Category {
 
     @SerializedName("alias")
-    @Expose
-    private String alias;
+    @Expose private String alias;
+
     @SerializedName("title")
-    @Expose
-    private String title;
+    @Expose private String title;
 
     public String getAlias() {
         return alias;
