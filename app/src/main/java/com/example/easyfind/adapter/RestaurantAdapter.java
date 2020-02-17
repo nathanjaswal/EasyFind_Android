@@ -14,22 +14,24 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.ColumnInfo;
-
 import com.example.easyfind.R;
 import com.example.easyfind.database.BusinessServiceImpl;
 import com.example.easyfind.models.Business;
-import com.example.easyfind.ui.fav.FavouriteFragment;
+import com.example.easyfind.ui.search.SearchFragment;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder> {
 
     private List<Business> businesses;
+    private SearchFragment searchFragment;
 
-    public RestaurantAdapter(List<Business> businesses) {
+    public RestaurantAdapter(List<Business> businesses, Fragment fragment) {
         this.businesses = businesses;
+        if (fragment instanceof SearchFragment)
+            searchFragment = (SearchFragment) fragment;
     }
 
     @NonNull
@@ -43,13 +45,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     public void onBindViewHolder(@NonNull final RestaurantViewHolder holder, int position) {
         final Business business = businesses.get(position);
         holder.txtName.setText(business.getName());
-        holder.txtAddress.setText(business.getLocation().getAddress1());
+        holder.txtAddress.setText(business.getLocation().getDisplayAddress().toString());
         Picasso.get().load(business.getImageUrl()).into(holder.imgRestaurant);
         holder.txtReview.setText(business.getReviewCount() + " Reviews");
         holder.txtCategory.setText(business.getCategories().get(0).getTitle());
         holder.txtPrice.setText(business.getPrice());
         holder.ratingBar.setRating(business.getRating().floatValue());
-        final boolean isFav = business.isFav();
+        final boolean isFav = checkIsFav(holder.itemView.getContext(), business);
         setFav(isFav, holder);
         holder.imgFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +59,20 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 addToFavUnFav(business, v.getContext(), isFav);
             }
         });
+    }
+
+    private boolean checkIsFav(Context context, Business business) {
+        BusinessServiceImpl businessService = new BusinessServiceImpl(context);
+        List<Business> businesses = new ArrayList<>();
+        businesses.addAll(businessService.getAll());
+        boolean isFav = false;
+        for (Business dbBusiness: businesses) {
+            if (business.getId().equalsIgnoreCase(dbBusiness.getId())) {
+                isFav = true;
+                break;
+            }
+        }
+        return isFav;
     }
 
     private void setFav(boolean isFav, RestaurantViewHolder holder) {
@@ -71,10 +87,15 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             refreshList(businessService);
         } else {
             businessService.insertAll(business);
+            notifyDataSetChanged();
         }
     }
 
     private void refreshList(BusinessServiceImpl businessService) {
+        if (searchFragment != null) {
+            notifyDataSetChanged();
+            return;
+        }
         businesses.removeAll(businesses);
         businesses.addAll(businessService.getAll());
         notifyDataSetChanged();

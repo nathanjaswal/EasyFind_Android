@@ -53,7 +53,7 @@ public class SearchFragment extends Fragment {
 
     private void initRecyclerView(View view) {
         listView = view.findViewById(R.id.recycle_list);
-        restaurantAdapter = new RestaurantAdapter(businesses);
+        restaurantAdapter = new RestaurantAdapter(businesses, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         listView.addItemDecoration(new DividerItemDecoration(listView.getContext(), DividerItemDecoration.VERTICAL));
         listView.setLayoutManager(layoutManager);
