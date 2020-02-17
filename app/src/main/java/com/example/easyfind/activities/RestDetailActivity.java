@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -48,9 +49,9 @@ public class RestDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rest_detail);
 
-        //initView();
+        initView();
 
-        fetchData();
+
     }
 
     private void initView() {
@@ -60,17 +61,13 @@ public class RestDetailActivity extends AppCompatActivity {
         rDesc = findViewById(R.id.description);
         callTV = findViewById(R.id.callTxt);
         addressTV = findViewById(R.id.address);
-        listView = findViewById(R.id.recycle_list);
+
 
         callBtn = findViewById(R.id.callImgBtn);
         msgBtn = findViewById(R.id.message);
         mapBtn = findViewById(R.id.mapBtn);
 
-        restaurantAdapter = new RestDetailImgAdapter(imgList);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getBaseContext(), LinearLayoutManager.HORIZONTAL, false);
-        listView.addItemDecoration(new DividerItemDecoration(listView.getContext(), DividerItemDecoration.HORIZONTAL));
-        listView.setLayoutManager(layoutManager);
-        listView.setAdapter(restaurantAdapter);
+
 
         //
         callBtn.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +102,8 @@ public class RestDetailActivity extends AppCompatActivity {
             }
         });
 
+        fetchData();
+
     }
 
     public void sendSMS(String message) {
@@ -125,6 +124,25 @@ public class RestDetailActivity extends AppCompatActivity {
             public void onResponse(Call<Business> call, Response<Business> response) {
                 response.isSuccessful();
                 if (response.isSuccessful()) {
+
+                    Business res = response.body();
+
+                  //  Log.i(String.valueOf(res.getPhotos()), "");
+
+                    //
+                    listView = findViewById(R.id.imgRecyclerView);
+                    restaurantAdapter = new RestDetailImgAdapter(res.getPhotos());
+                    RecyclerView.LayoutManager layM = new LinearLayoutManager(getBaseContext(), LinearLayoutManager.HORIZONTAL, false);
+                   // listView.addItemDecoration(new DividerItemDecoration(listView.getContext(), DividerItemDecoration.HORIZONTAL));
+                    listView.setLayoutManager(layM);
+                    listView.setAdapter(restaurantAdapter);
+
+                    //
+                    rName.setText(res.getName());
+                    rPrice.setText(res.getPrice());
+                    rDesc.setText(res.getAlias());
+                    callTV.setText(res.getPhone());
+                    addressTV.setText(res.getLocation().getDisplayAddress().toString());
 
                 } else {
 
