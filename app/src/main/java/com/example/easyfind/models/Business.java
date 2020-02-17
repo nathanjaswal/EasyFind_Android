@@ -1,60 +1,85 @@
 package com.example.easyfind.models;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+import com.example.easyfind.database.CoordinateConverter;
+import com.example.easyfind.database.CategoryListConverter;
+import com.example.easyfind.database.LocationConverter;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
+@Entity(tableName = "business_table")
 public class Business {
 
+    @PrimaryKey @NonNull
     @SerializedName("id")
-    @Expose
-    private String id;
+    @Expose private String id;
+
+    @ColumnInfo(name = "isFav")
+    private boolean isFav;
+
+    @ColumnInfo(name = "alias")
     @SerializedName("alias")
-    @Expose
-    private String alias;
+    @Expose private String alias;
+
+    @ColumnInfo(name = "name")
     @SerializedName("name")
-    @Expose
-    private String name;
+    @Expose private String name;
+
+    @ColumnInfo(name = "image_url")
     @SerializedName("image_url")
-    @Expose
-    private String imageUrl;
+    @Expose private String imageUrl;
+
+    @ColumnInfo(name = "is_closed")
     @SerializedName("is_closed")
-    @Expose
-    private Boolean isClosed;
+    @Expose private Boolean isClosed;
+
+    @ColumnInfo(name = "url")
     @SerializedName("url")
-    @Expose
-    private String url;
+    @Expose private String url;
+
+    @ColumnInfo(name = "review_count")
     @SerializedName("review_count")
-    @Expose
-    private Integer reviewCount;
+    @Expose private Integer reviewCount;
+
+    @TypeConverters(CategoryListConverter.class)
+    @ColumnInfo(name = "categories")
     @SerializedName("categories")
-    @Expose
-    private List<Category> categories = null;
+    @Expose private List<Category> categories = null;
+
+    @ColumnInfo(name = "rating")
     @SerializedName("rating")
-    @Expose
-    private Double rating;
+    @Expose private Double rating;
+
+    @TypeConverters(CoordinateConverter.class)
+    @ColumnInfo(name = "coordinates")
     @SerializedName("coordinates")
-    @Expose
-    private Coordinates coordinates;
-    @SerializedName("transactions")
-    @Expose
-    private List<String> transactions = null;
+    @Expose private Coordinates coordinates;
+
+    @ColumnInfo(name = "price")
     @SerializedName("price")
-    @Expose
-    private String price;
+    @Expose private String price;
+
+    @TypeConverters(LocationConverter.class)
+    @ColumnInfo(name = "location")
     @SerializedName("location")
-    @Expose
-    private BusinessLocation location;
+    @Expose private BusinessLocation location;
+
+    @ColumnInfo(name = "phone")
     @SerializedName("phone")
-    @Expose
-    private String phone;
+    @Expose private String phone;
+
+    @ColumnInfo(name = "display_phone")
     @SerializedName("display_phone")
-    @Expose
-    private String displayPhone;
+    @Expose private String displayPhone;
+
+    @ColumnInfo(name = "distance")
     @SerializedName("distance")
-    @Expose
-    private Double distance;
+    @Expose private Double distance;
 
     public String getId() {
         return id;
@@ -136,14 +161,6 @@ public class Business {
         this.coordinates = coordinates;
     }
 
-    public List<String> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<String> transactions) {
-        this.transactions = transactions;
-    }
-
     public String getPrice() {
         return price;
     }
@@ -182,5 +199,13 @@ public class Business {
 
     public void setDistance(Double distance) {
         this.distance = distance;
+    }
+
+    public boolean isFav() {
+        return isFav;
+    }
+
+    public void setFav(boolean fav) {
+        isFav = fav;
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.example.easyfind.models.BaseBusiness;
 import com.example.easyfind.models.Business;
 import com.example.easyfind.store.APIClient;
 import com.example.easyfind.store.GetDataService;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,8 @@ public class SearchFragment extends Fragment {
     private GetDataService apiInterface;
     private BaseBusiness baseBusiness;
     private List<Business> businesses = new ArrayList<>();
+    private KProgressHUD progressHUD;
+    private SearchView searchView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -47,36 +51,60 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initViews(view);
         initRecyclerView(view);
-        fetchData();
+        fetchData("Toronto");
+    }
+
+    private void initViews(View view) {
+        searchView = view.findViewById(R.id.searchView);
+        searchView.setQueryHint("Enter location name");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                fetchData(query); // search
+                searchView.clearFocus();
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     private void initRecyclerView(View view) {
         listView = view.findViewById(R.id.recycle_list);
-        restaurantAdapter = new RestaurantAdapter(businesses);
+        restaurantAdapter = new RestaurantAdapter(businesses, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         listView.addItemDecoration(new DividerItemDecoration(listView.getContext(), DividerItemDecoration.VERTICAL));
         listView.setLayoutManager(layoutManager);
         listView.setAdapter(restaurantAdapter);
     }
 
-    private void fetchData() {
+    private void fetchData(String search) {
+        businesses.removeAll(businesses);
+        progressHUD = KProgressHUD.create(getActivity())
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
         apiInterface = APIClient.getRetrofit().create(GetDataService.class);
-        Call<BaseBusiness> call = apiInterface.getBaseBusiness();
+        Call<BaseBusiness> call = apiInterface.getBaseBusiness(search, 50);
         call.enqueue(new Callback<BaseBusiness>() {
             @Override
             public void onResponse(Call<BaseBusiness> call, Response<BaseBusiness> response) {
+                progressHUD.dismiss();
                 response.isSuccessful();
                 if (response.isSuccessful()) {
                     baseBusiness = response.body();
                     businesses.addAll(baseBusiness.getBusinesses());
                     restaurantAdapter.notifyDataSetChanged();
-                } else {
-
-                }
+                } else {}
             }
             @Override
             public void onFailure(Call<BaseBusiness> call, Throwable t) {
+                progressHUD.dismiss();
                 call.cancel();
             }
         });
