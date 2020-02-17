@@ -22,6 +22,7 @@ import com.example.easyfind.models.BaseBusiness;
 import com.example.easyfind.models.Business;
 import com.example.easyfind.store.APIClient;
 import com.example.easyfind.store.GetDataService;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class SearchFragment extends Fragment {
     private GetDataService apiInterface;
     private BaseBusiness baseBusiness;
     private List<Business> businesses = new ArrayList<>();
+    private KProgressHUD progressHUD;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -61,11 +63,17 @@ public class SearchFragment extends Fragment {
     }
 
     private void fetchData() {
+        progressHUD = KProgressHUD.create(getActivity())
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
         apiInterface = APIClient.getRetrofit().create(GetDataService.class);
         Call<BaseBusiness> call = apiInterface.getBaseBusiness();
         call.enqueue(new Callback<BaseBusiness>() {
             @Override
             public void onResponse(Call<BaseBusiness> call, Response<BaseBusiness> response) {
+                progressHUD.dismiss();
                 response.isSuccessful();
                 if (response.isSuccessful()) {
                     baseBusiness = response.body();
@@ -77,6 +85,7 @@ public class SearchFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<BaseBusiness> call, Throwable t) {
+                progressHUD.dismiss();
                 call.cancel();
             }
         });
