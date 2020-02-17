@@ -96,7 +96,7 @@ public class RestDetailActivity extends AppCompatActivity {
                 //
 //                Intent vAct = new Intent(v.getContext(), RestDetailActivity.class);
 //
-//                v.getContext().startActivity(vAct);
+//     /           v.getContext().startActivity(vAct);
 
             }
         });
