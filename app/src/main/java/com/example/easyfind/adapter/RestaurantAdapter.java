@@ -1,6 +1,7 @@
 package com.example.easyfind.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.easyfind.R;
+import com.example.easyfind.activities.RestDetailActivity;
 import com.example.easyfind.database.BusinessServiceImpl;
 import com.example.easyfind.models.Business;
 import com.example.easyfind.ui.search.SearchFragment;
@@ -59,6 +61,17 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 addToFavUnFav(business, v.getContext(), isFav);
             }
         });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pushToDetail(v.getContext());
+            }
+        });
+    }
+
+    private void pushToDetail(Context context) {
+        Intent intent = new Intent(context, RestDetailActivity.class);
+        context.startActivity(intent);
     }
 
     private boolean checkIsFav(Context context, Business business) {

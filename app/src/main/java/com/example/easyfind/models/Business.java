@@ -3,6 +3,7 @@ package com.example.easyfind.models;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 import com.example.easyfind.database.CoordinateConverter;
@@ -80,6 +81,11 @@ public class Business {
     @ColumnInfo(name = "distance")
     @SerializedName("distance")
     @Expose private Double distance;
+
+    @Ignore
+    @SerializedName("photos")
+    @Expose private List<String> photos = null;
+
 
     public String getId() {
         return id;
@@ -207,5 +213,13 @@ public class Business {
 
     public void setFav(boolean fav) {
         isFav = fav;
+    }
+
+    public List<String> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
     }
 }

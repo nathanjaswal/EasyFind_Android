@@ -8,7 +8,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,8 +18,6 @@ import android.widget.TextView;
 
 import com.example.easyfind.R;
 import com.example.easyfind.adapter.RestDetailImgAdapter;
-import com.example.easyfind.adapter.RestaurantAdapter;
-import com.example.easyfind.models.BaseBusiness;
 import com.example.easyfind.models.Business;
 import com.example.easyfind.store.APIClient;
 import com.example.easyfind.store.GetDataService;
@@ -51,7 +48,7 @@ public class RestDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rest_detail);
 
-        initView();
+        //initView();
 
         fetchData();
     }
@@ -79,9 +76,9 @@ public class RestDetailActivity extends AppCompatActivity {
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String noString = no.getText().toString();
-                String msgMsg = msg.getText().toString();
-                sendSms(noString, msgMsg);
+//                String noString = no.getText().toString();
+//                String msgMsg = msg.getText().toString();
+//                sendSms(noString, msgMsg);
 
             }
         });
@@ -122,21 +119,19 @@ public class RestDetailActivity extends AppCompatActivity {
 
     private void fetchData() {
         apiInterface = APIClient.getRetrofit().create(GetDataService.class);
-        Call<Business> call = apiInterface.getDetsinBusiness();
-        call.enqueue(new Callback<BaseBusiness>() {
+        Call<Business> call = apiInterface.getBusinessDetail("NYa-JphaaB41ElGsb3iawA");
+        call.enqueue(new Callback<Business>() {
             @Override
-            public void onResponse(Call<BaseBusiness> call, Response<BaseBusiness> response) {
+            public void onResponse(Call<Business> call, Response<Business> response) {
                 response.isSuccessful();
                 if (response.isSuccessful()) {
-                    Business = response.body();
-                    businesses.addAll(baseBusiness.getBusinesses());
-                    restaurantAdapter.notifyDataSetChanged();
+
                 } else {
 
                 }
             }
             @Override
-            public void onFailure(Call<BaseBusiness> call, Throwable t) {
+            public void onFailure(Call<Business> call, Throwable t) {
                 call.cancel();
             }
         });
