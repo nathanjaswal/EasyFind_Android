@@ -3,4 +3,7 @@
     <string name="title_search">Search</string>
     <string name="title_fav">Favourite</string>
     <string name="title_settings">Settings</string>
+    <string name="api_key">AIzaSyD2ktEXAQnHpIkh5TqnJgqEaXwcs1olsmY</string>
+    <string name="api_key_places">AIzaSyD2ktEXAQnHpIkh5TqnJgqEaXwcs1olsmY</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyD2ktEXAQnHpIkh5TqnJgqEaXwcs1olsmY</string>
 </resources>

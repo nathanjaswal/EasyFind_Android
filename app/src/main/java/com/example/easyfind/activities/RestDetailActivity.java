@@ -44,6 +44,8 @@ public class RestDetailActivity extends AppCompatActivity {
 
     private GetDataService apiInterface;
 
+    private Business res;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +75,8 @@ public class RestDetailActivity extends AppCompatActivity {
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String noString = no.getText().toString();
-//                String msgMsg = msg.getText().toString();
-//                sendSms(noString, msgMsg);
+
+                dialContactPhone("123123123");
 
             }
         });
@@ -85,7 +86,7 @@ public class RestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                dialContactPhone("123123123");
+                sendSMS("Enquiry!");
             }
         });
 
@@ -95,9 +96,12 @@ public class RestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //
-//                Intent vAct = new Intent(v.getContext(), RestDetailActivity.class);
-//
-//     /           v.getContext().startActivity(vAct);
+                Intent vAct = new Intent(v.getContext(), MapActivity.class);
+
+                vAct.putExtra("lat", res.getCoordinates().getLatitude());
+                vAct.putExtra("long", res.getCoordinates().getLongitude());
+
+                v.getContext().startActivity(vAct);
 
             }
         });
@@ -108,8 +112,7 @@ public class RestDetailActivity extends AppCompatActivity {
 
     public void sendSMS(String message) {
         SmsManager smsManager = SmsManager.getDefault();
-        //smsManager.sendTextMessage();//TextMessage(readcontacts(context, "john"), null, message, null, null);
-
+        smsManager.sendTextMessage(res.getPhone(), null, message, null, null);
     }
 
     private void dialContactPhone(final String phoneNumber) {
@@ -125,7 +128,7 @@ public class RestDetailActivity extends AppCompatActivity {
                 response.isSuccessful();
                 if (response.isSuccessful()) {
 
-                    Business res = response.body();
+                    res = response.body();
 
                   //  Log.i(String.valueOf(res.getPhotos()), "");
 
