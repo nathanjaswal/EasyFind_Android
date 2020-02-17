@@ -8,8 +8,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -76,6 +79,9 @@ public class RestDetailActivity extends AppCompatActivity {
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String noString = no.getText().toString();
+                String msgMsg = msg.getText().toString();
+                sendSms(noString, msgMsg);
 
             }
         });
@@ -85,9 +91,10 @@ public class RestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
+                dialContactPhone("123123123");
             }
         });
+
 
         //
         mapBtn.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +108,16 @@ public class RestDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void sendSMS(String message) {
+        SmsManager smsManager = SmsManager.getDefault();
+        //smsManager.sendTextMessage();//TextMessage(readcontacts(context, "john"), null, message, null, null);
+
+    }
+
+    private void dialContactPhone(final String phoneNumber) {
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null)));
     }
 
     private void fetchData() {
