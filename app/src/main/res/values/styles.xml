@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- For search bar -->
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
+        <item name="android:textSize">22sp</item>
+        <item name="queryHint">Enter location name</item>
+    </style>
+
 </resources>
