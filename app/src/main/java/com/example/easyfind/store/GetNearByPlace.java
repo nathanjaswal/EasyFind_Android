@@ -12,6 +12,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.List;
+//
 
 public class GetNearByPlace extends AsyncTask<Object, String, String> {
     GoogleMap googleMap;
