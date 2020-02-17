@@ -61,9 +61,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginButtonClicked() {
-        Intent intent = new Intent(context(), MainActivity.class);
-        startActivity(intent);
-        /*
         String user = userNameTextView.getText().toString();
         String pass = passwordTextView.getText().toString();
         if (!user.equals("easy@gmail.com") && user.trim().contains("")) {
@@ -79,9 +76,9 @@ public class LoginActivity extends AppCompatActivity {
                 UserDataManager.setUserName(getApplicationContext(), "null");
                 UserDataManager.setPassword(getApplicationContext(), "null");
             }
-
-            // navigate...
-        }*/
+            Intent intent = new Intent(context(), MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void showAlert(String message) {
@@ -96,10 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-            }
+            public void onClick(DialogInterface dialog, int which) {}
         });
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
