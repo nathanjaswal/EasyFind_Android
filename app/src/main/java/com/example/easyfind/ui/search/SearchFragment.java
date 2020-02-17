@@ -53,7 +53,7 @@ public class SearchFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         initRecyclerView(view);
-        fetchData();
+        fetchData("Toronto");
     }
 
     private void initViews(View view) {
@@ -62,6 +62,8 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                fetchData(query); // search
+                searchView.clearFocus();
                 return false;
             }
             @Override
@@ -80,14 +82,15 @@ public class SearchFragment extends Fragment {
         listView.setAdapter(restaurantAdapter);
     }
 
-    private void fetchData() {
+    private void fetchData(String search) {
+        businesses.removeAll(businesses);
         progressHUD = KProgressHUD.create(getActivity())
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f)
                 .show();
         apiInterface = APIClient.getRetrofit().create(GetDataService.class);
-        Call<BaseBusiness> call = apiInterface.getBaseBusiness();
+        Call<BaseBusiness> call = apiInterface.getBaseBusiness(search, 50);
         call.enqueue(new Callback<BaseBusiness>() {
             @Override
             public void onResponse(Call<BaseBusiness> call, Response<BaseBusiness> response) {
@@ -97,9 +100,7 @@ public class SearchFragment extends Fragment {
                     baseBusiness = response.body();
                     businesses.addAll(baseBusiness.getBusinesses());
                     restaurantAdapter.notifyDataSetChanged();
-                } else {
-
-                }
+                } else {}
             }
             @Override
             public void onFailure(Call<BaseBusiness> call, Throwable t) {
